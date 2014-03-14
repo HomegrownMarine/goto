@@ -1,0 +1,11 @@
+{
+    "name": "goto",
+    "description": "simple waypoint setting app",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express": ">= 3.4.8",
+        "less-middleware": "0.1.15",
+	    "debug": "~0.7.4"
+    }
+}

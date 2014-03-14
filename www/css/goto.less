@@ -1,0 +1,115 @@
+body {
+    font-family: Helvetica;
+    font-size: 20px;
+    padding: 0;
+    margin: 0;
+}
+
+.entry {
+    background-color: #333;
+    color: white;
+    padding: 8px;
+
+    label {
+        display: block;
+        span {
+            width: 100px;
+            display: inline-block;
+        }
+    }
+
+    input[type=text],
+    input[type=number] {
+        width: 150px;
+        font-size: 16px;
+    }
+}
+
+button {
+    background-color: #0080ff;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+    height: 24px;
+}
+
+ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: block;
+    padding: 10px 10px;
+    clear: both;
+    border-bottom: 1px dotted #666;
+}
+
+li:last-child {
+    border-bottom: none;
+} 
+
+p {
+    margin-bottom: 0;
+}
+
+h1 {
+    margin: 0 5px;
+    color: #333;
+    font-size: 28px;
+    
+    .lat,
+    .lon {
+        font-size: 20px;
+    }
+}
+
+
+.right {
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #555;
+    .name {
+        font-size: 50px;
+        line-height: 50px;
+        font-weight: bold;
+        float: left;
+        margin-right: 20px;
+    }
+}
+
+.verb {
+    font-size: 16px;
+    display: block;
+}
+.lat, .lon {
+    display: block;
+}
+
+.coord_clear {
+    display: inline-block; 
+    width: 7px; 
+    height: 11px;
+    position: relative;
+    left: -20px;
+    color: white;
+    background-color: #0080ff;
+    font-size: 12px;
+    padding: 0 3px 3px 3px; 
+    vertical-align: middle;
+    border-radius: 8px;
+    border: 2px solid #0060BF;
+    /*box-shadow: 1px 1px 1px #666;*/
+/*            background-image: -webkit-gradient(linear, 0 0, 0 100%, from(
+rgba(255, 255, 255, 0.699219)), color-stop(0.5, 
+rgba(255, 255, 255, 0.199219)), color-stop(0.5, 
+transparent), to(
+rgba(255, 255, 255, 0.296875)));
+*/        }

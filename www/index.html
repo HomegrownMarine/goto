@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Go To</title>
+    <link rel="stylesheet" type="text/css" href="css/goto.css">
+    <!-- http://diveintohtml5.info/offline.html -->
+</head>
+<body>
+    <h1>
+        GO -> TO
+        <span id="current_waypoint">:
+            <span class="name"></span>
+            <span class="lat"></span>
+            <span class="lon"></span>
+        </span>
+    </h1>
+    <div>
+    </div>
+
+    <form action="/goto/current" class="entry" method="post">
+        <label><span>Name:</span><input type="text" name="name"></label>
+        <label><span>Latitude:</span><input type="text" id="lat" name="lat" value="47."></label>
+        <label><span>Longitude:</span><input type="text" id="lon" name="lon" value="-122."></label>             
+        <p class="right">
+            <button type="submit" name="set">Go To</button>
+        </p>
+    </form>
+    <ul id="wplist">
+    </ul>
+    <script type="text/template" id="history_template">
+        <li id='goto{{ name }}'>
+            <a href="/goto/current?lat={{ lat }}&lon={{ lon }}&name={{ name }}">
+                <span class="verb">Go To</span>
+                <span class="name">{{ name }}</span>
+                <span class="lat">{{ lat }}</span>
+                <span class="lon">{{ lon }}</span>
+            </a>
+        </li>
+    </script>
+
+    <script src="js/lib/jquery-2.1.0.min.js"></script>
+    <script src="js/lib/handlebars.js"></script>
+    <script src="js/goto.js"></script>
+</body>
+</html>
