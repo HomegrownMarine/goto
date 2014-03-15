@@ -62,18 +62,9 @@ $(function() {
             success: function(data) {
                 updateCurrentDestination(data);
 
-                var li = $('li#goto'+data.name);
-                if ( li.size() == 0 ) {
-                    li = $('li:eq(0)').clone();
-                    li.find('.name').text(data.name);
-                    li.attr('id', 'goto'+data.name);
-                }
+                $('li#goto'+data.name).remove();
 
-                li.find('.lat').text(data.lat.toFixed(8));
-                li.find('.lon').text(data.lon.toFixed(8));
-                li.find('a').href = action + '?' + data;
-
-                li.prependTo( $('#wplist') );
+                $(historyTemplate(data)).prependTo( $('#wplist') );
             }
         });
 
