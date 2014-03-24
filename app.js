@@ -14,8 +14,7 @@ var history = null;
 
 
 //TODO: save history for myself
-//TODO: set waypoint with global module
-//TODO: 
+//TODO: calculate navigation data, and repost
 
 //parse coordinate string in either decimal degrees or decimal 
 //minutes.  Returns float
@@ -104,9 +103,7 @@ function getHistory() {
     return history;
 }
 
-exports.load = function(server) {
-    console.info('dirname', __dirname);
-
+exports.load = function(server, boat_data, settings) {
     // server.use('/goto', require('less-middleware')(path.join(__dirname, 'www')));
     server.use('/goto', express.static(path.join(__dirname, 'www')));
 
@@ -131,9 +128,18 @@ exports.load = function(server) {
         res.send(JSON.stringify(current));
     });
 
-    server.on('new:gprmc', function(msg) {
-        // calculate waypoiny stuff and post it?
+    boat_data.on('data:rmc', function(msg) {
+        var rmb = {
+            type: 'rmb'
+
+        };
+
+        // TODO: calculate waypoiny stuff and post it
+
+        boat_data.broadcast(null, rmb);
     });
+
+    return ['/goto', 'GoTo Waypoint'];
 };
 
 
