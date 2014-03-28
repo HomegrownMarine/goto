@@ -1,13 +1,18 @@
 var express = require('express');
+var _ = require('underscore-node');
 
 var server = express();
 server.use(express.urlencoded());
 
-server.get('/lib/jquery.js', function(req, res){
-    res.redirect('http://code.jquery.com/jquery-2.1.0.min.js');
-});
-server.get('/lib/handlebars.js', function(req, res){
-    res.redirect('http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v1.3.0.js');
+var redirects = [
+    {req: '/lib/jquery.js', url: 'http://code.jquery.com/jquery-2.1.0.min.js'},
+    {req: '/lib/handlebars.js', url: 'http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v1.3.0.js'}
+];
+
+_(redirects).each(function(redirect) {
+    server.get(redirect.req, function(req, res){
+        res.redirect(redirect.url);
+    });
 });
 
 // serve randomly changing data

@@ -2,18 +2,12 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 
-
 var console = require('console');
-
-var current_waypoint_location = "/Users/grady/Projects/BoatComputer/goto/current.json";
-var history_location = "/Users/grady/Projects/BoatComputer/goto/history.json";
-
 
 var current = null;
 var history = null;
+var settings = null;
 
-
-//TODO: save history for myself
 //TODO: calculate navigation data, and repost
 
 //parse coordinate string in either decimal degrees or decimal 
@@ -29,21 +23,6 @@ function coordinate(str) {
 }
 
 function getCurrentWaypoint() {
-    if ( current === null ) {
-        //TODO:
-        current = {
-            'name': 'B',
-            'lat': 47.234534,
-            'lon': -122.4235674,
-        };
-        try {
-            var fileContents = fs.readFileSync(current_waypoint_location,'utf8'); 
-            current = JSON.parse(fileContents);
-        }
-        catch(e) {
-            //no problem
-        }
-    }
     return current;
 }
 
@@ -51,17 +30,10 @@ function setCurrentWaypoint(waypoint) {
     current = waypoint;
     addToHistory(waypoint);
 
-    var jsonStr = JSON.stringify(waypoint);
-    fs.writeFile(current_waypoint_location, jsonStr, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
+    settings.set('goto:current-waypoint', waypoint);
 }
 
 function addToHistory(waypoint) {
-    if( history === null) loadHistory();
-
     for (var i=0; i < history.length; i++) {
         if ( history[i].name === waypoint.name ) {
             history.splice(i,1);
@@ -75,35 +47,24 @@ function addToHistory(waypoint) {
     saveHistory();
 }
 
-function loadHistory() {
-    history = [];
-    try {
-        var fileContents = fs.readFileSync(history_location,'utf8'); 
-        history = JSON.parse(fileContents);
-    }
-    catch(e) {
-        //no problem
-    }
-}
-
 function saveHistory() {
-    var jsonStr = JSON.stringify(history);
-    fs.writeFile(history_location, jsonStr, function(err) {
-        if (err) {
-            console.log(err);
-        }
-    }); 
+    settings.set('goto:waypoint-history', history); 
 }
 
 function getHistory() {
-    if ( history === null ) {
-        loadHistory();
-    }
-
     return history;
 }
 
-exports.load = function(server, boat_data, settings) {
+exports.load = function(server, boat_data, settings_comp) {
+    settings = settings_comp;
+
+    history = settings.get('goto:waypoint-history') || [];
+    current = settings.get('goto:current-waypoint') || {
+            'name': 'B',
+            'lat': 47.234534,
+            'lon': -122.4235674,
+        };;
+
     // server.use('/goto', require('less-middleware')(path.join(__dirname, 'www')));
     server.use('/goto', express.static(path.join(__dirname, 'www')));
 
@@ -134,7 +95,7 @@ exports.load = function(server, boat_data, settings) {
 
         };
 
-        // TODO: calculate waypoiny stuff and post it
+        // TODO: calculate waypoiny stuff and broadcast it
 
         boat_data.broadcast(null, rmb);
     });
