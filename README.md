@@ -1,5 +1,6 @@
-Simple navigation app
+#HomeGrown Marine: GoTo Waypoint
+Simple Navigatio: Enter a waypoint, and RMB navigation messages will be injected into the NMEA network.
 
-Runs as a module in https://github.com/HomegrownMarine/boat_computer.  Users can enter in a waypoint, and navigation messages to that point will be inserted into the boat's data stream.
+__Runs as a module in https://github.com/HomegrownMarine/boat_computer.__
 
 ![](https://raw.githubusercontent.com/HomegrownMarine/goto/master/README/simple_example.png)

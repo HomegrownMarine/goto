@@ -1,5 +1,5 @@
 var express = require('express');
-var _ = require('underscore-node');
+var _ = require('lodash');
 
 var server = express();
 server.use(express.urlencoded());
