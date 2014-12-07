@@ -21,11 +21,53 @@ $.fn.clearLatLon = function() {
         });
 };
 
+(function() {
+    /**
+     * Decimal adjustment of a number.
+     *
+     * @param   {String}    type    The type of adjustment.
+     * @param   {Number}    value   The number.
+     * @param   {Integer}   exp     The exponent (the 10 logarithm of the adjustment base).
+     * @returns {Number}            The adjusted value.
+     */
+    function decimalAdjust(type, value, exp) {
+        // If the exp is undefined or zero...
+        if (typeof exp === 'undefined' || +exp === 0) {
+            return Math[type](value);
+        }
+        value = +value;
+        exp = +exp;
+        // If the value is not a number or the exp is not an integer...
+        if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0)) {
+            return NaN;
+        }
+        // Shift
+        value = value.toString().split('e');
+        value = Math[type](+(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp)));
+        // Shift back
+        value = value.toString().split('e');
+        return +(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp));
+    }
+
+    // Decimal round
+    if (!Math.round10) {
+        Math.round10 = function(value, exp) {
+            return decimalAdjust('round', value, exp);
+        };
+    }
+})();
+
 function updateCurrentDestination(data) {
     $(window).scrollTop(0);
-    $('h1 .name').text(data.name);
-    $('h1 .lat').text(data.lat);
-    $('h1 .lon').text(data.lon);
+    $('#current_waypoint .name').text(data.name);
+    $('#current_waypoint .lat').text(data.lat);
+    $('#current_waypoint .lon').text(data.lon);
+}
+
+function roundCoordinates(data) {
+    data.lat = Math.round10(data.lat, -8);
+    data.lon = Math.round10(data.lon, -8);
+    return data;
 }
 
 // INIT
@@ -38,14 +80,14 @@ $(function() {
         var historyHTML = [];
 
         for (var i=0; i < data.length; i++) {
-            historyHTML.push( historyTemplate(data[i]) );
+            historyHTML.push( historyTemplate(roundCoordinates(data[i])) );
         }
 
         $('#wplist').html(historyHTML.join(''));
     });
 
     $.getJSON('/goto/current', function(data) {
-        updateCurrentDestination(data);
+        updateCurrentDestination(roundCoordinates(data));
     });
 
     //TODO: block UI for a second.
@@ -60,6 +102,7 @@ $(function() {
             type: 'POST',
             dataType: 'json',
             success: function(data) {
+                roundCoordinates(data);
                 updateCurrentDestination(data);
 
                 $('li#goto'+data.name).remove();
