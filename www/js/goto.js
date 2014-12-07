@@ -5,7 +5,7 @@ $.fn.clearLatLon = function() {
             var x = $('<a href="#" class="coord_clear" tabindex="-1">&lt;</a>')
                         .click( function() { 
                             var val = textbox.val();
-                            var m = /(-?\d+\.)?(\d{0,2})?(\d+)?/.exec(val)
+                            var m = /(-?\d+[\. ])?(\d{0,2}.?)?(\d+)?/.exec(val);
                             
                             if ( m && m[3] )
                                 val = m[1] + m[2];
@@ -19,7 +19,7 @@ $.fn.clearLatLon = function() {
                         })
                         .insertAfter(textbox);
         });
-}
+};
 
 function updateCurrentDestination(data) {
     $(window).scrollTop(0);
@@ -69,7 +69,7 @@ $(function() {
         });
 
         return false;
-    })
+    });
 
     $('#wplist').on('click', 'a', function(e) {
         e.preventDefault();
@@ -83,10 +83,10 @@ $(function() {
             success: function(data) {
                 updateCurrentDestination(data);
 
-                el.closest('li').prependTo( $('#wplist') )
+                el.closest('li').prependTo( $('#wplist') );
             }
         });
-    })
+    });
 
     $('form input[name=name]').focus();
 });

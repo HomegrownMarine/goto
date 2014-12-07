@@ -22,7 +22,7 @@ server.get('/now', function(req, res){
 
 server.set('port', process.env.PORT || 3000);
 
-require('./app').load( server )
+require('./app').load( server );
 
 var server = server.listen(server.get('port'), function() {
     console.info('Express server listening on port ' + server.address().port);
