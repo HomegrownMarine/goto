@@ -2,6 +2,16 @@ var assert = require("chai").assert;
 var calcs = require('../calcs.js');
 
 describe('goto', function(){
+    it(' should parse decimal lat/lon correctly', function() {
+        assert.equal( calcs.coordinate('47.67962'), 47.67962)
+        assert.equal( calcs.coordinate('-122.40555'), -122.40555)
+    });
+
+    it(' should parse lat/lon in minutes correctly', function() {
+        assert.closeTo( calcs.coordinate('47 35.700'), 47.595, .00001)
+        assert.closeTo( calcs.coordinate('-122 28.800'), -122.48, .00001)
+    });
+
     it(' should calculate distance correctly', function(){
         assert.closeTo( calcs.distance(47.67962, -122.40555, 47.67897, -122.3767), 1.1668, .0001);
     });

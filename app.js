@@ -15,19 +15,6 @@ var current = null;
 var history = null;
 var settings = null;
 
-
-//parse coordinate string in either decimal degrees or decimal 
-//minutes.  Returns float
-function coordinate(str) {
-    var m = /(-?)(\d{0,3}) (\d{0,2}\.\d+)/.exec(str);
-    var r;
-
-    if (m)
-        return (m[1]=='-'?-1:1)*parseInt(m[2])*parseFloat(m[3]/60);
-    else
-        return parseFloat(str);
-}
-
 function getCurrentWaypoint() {
     return current;
 }
@@ -70,7 +57,7 @@ exports.load = function(server, boat_data, settings_comp) {
             'name': 'B',
             'lat': 47.234534,
             'lon': -122.4235674,
-        };;
+        };
 
     
     // add in app's static content
@@ -91,8 +78,8 @@ exports.load = function(server, boat_data, settings_comp) {
 
         var waypoint = {
             'name': req.body.name,
-            'lat': coordinate(req.body.lat),
-            'lon': coordinate(req.body.lon),
+            'lat': calcs.coordinate(req.body.lat),
+            'lon': calcs.coordinate(req.body.lon)
         };
 
         setCurrentWaypoint(waypoint);
@@ -103,9 +90,9 @@ exports.load = function(server, boat_data, settings_comp) {
     boat_data.on('data:rmc', function(data) {
         if ( current === null ) return;
         try {
-            var dtw = calcs.distance( data['lat'], data['lon'], current.lat, current.lon );
-            var btw = calcs.bearing( data['lat'], data['lon'], current.lat, current.lon );
-            var vmg = data['sog'] * Math.cos( calcs.rad(btw - data['cog']));
+            var dtw = calcs.distance( data.lat, data.lon, current.lat, current.lon );
+            var btw = calcs.bearing( data.lat, data.lon, current.lat, current.lon );
+            var vmg = data.sog * Math.cos( calcs.rad(btw - data.cog));
             
             //TODO: From waypoint
             //var xte = crossTrackError( fromWP.latitude, fromWP.longitude, data['lat'], data['lon'], destinationWP.latitude, destinationWP.longitude )
@@ -126,7 +113,7 @@ exports.load = function(server, boat_data, settings_comp) {
         }
     });
 
-    return {url:'/goto/', title:'GoTo Waypoint', priority: 1};
+    return {url:'/goto/', title:'GoTo Waypoint', priority: 5};
 };
 
 
