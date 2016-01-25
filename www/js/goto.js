@@ -2,7 +2,7 @@ $.fn.clearLatLon = function() {
     return $(this)
         .each( function() {
             var textbox = $(this);
-            var x = $('<a href="#" class="coord_clear" tabindex="-1">&lt;</a>')
+            var x = $('<a href="#" class="coord_clear pure-button button-xsmall" tabindex="-1">◀</a>')
                         .click( function() { 
                             var val = textbox.val();
                             var m = /(-?\d+[\. ])?(\d{0,2}.?)?(\d+)?/.exec(val);
@@ -105,7 +105,7 @@ $(function() {
                 roundCoordinates(data);
                 updateCurrentDestination(data);
 
-                $('li#goto'+data.name).remove();
+                $('#goto'+data.name).remove();
 
                 $(historyTemplate(data)).prependTo( $('#wplist') );
             }
@@ -126,7 +126,7 @@ $(function() {
             success: function(data) {
                 updateCurrentDestination(data);
 
-                el.closest('li').prependTo( $('#wplist') );
+                el.closest('.menu_item').prependTo( $('#wplist') );
             }
         });
     });

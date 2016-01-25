@@ -48,8 +48,9 @@ function getHistory() {
     return history;
 }
 
-exports.load = function(server, boat_data, settings_comp) {
-    settings = settings_comp;
+exports.getCurrentWaypoint = getCurrentWaypoint;
+exports.load = function(server, boat_data, stg) {
+    settings = stg;
 
     // get app settings
     history = settings.get('goto:waypoint-history') || [];
