@@ -2,7 +2,7 @@ $.fn.clearLatLon = function() {
     return $(this)
         .each( function() {
             var textbox = $(this);
-            var x = $('<a href="#" class="coord_clear pure-button button-xsmall" tabindex="-1">◀</a>')
+            var x = $('<a href="#" class="coord_clear pure-button" tabindex="-1">◀</a>')
                         .click( function() { 
                             var val = textbox.val();
                             var m = /(-?\d+[\. ])?(\d{0,2}.?)?(\d+)?/.exec(val);
